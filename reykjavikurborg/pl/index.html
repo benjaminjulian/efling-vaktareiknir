@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang=is>
+    <head>
+        <meta charset="utf8">
+        <title>Efling : Kalkulator pracy zmianowej - Miasto Reykjavik</title>
+        <link rel="stylesheet" href="../../style.css">
+        <style>
+            * {
+                font-family: Arial;
+            }
+            p {
+                font-size: 14px;
+            }
+            p.daycaption {
+                font-size: 10px;
+                color: gray;
+                width: 100%;
+                text-align: center;
+            }
+            p.weekname {
+                text-decoration: underline;
+                font-size: 18px;
+            }
+            td:first-child {
+                text-align: right;
+            }
+            td:second-child {
+                text-align: left;
+            }
+            td.time-result {
+                font-family: Courier;
+                text-align: right;
+            }
+            td {
+                padding: 5px;
+            }
+            #calculations td {
+                border-top: 1px dashed gray;
+            }
+            th {
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            input.times {
+                font-size: 20px;
+                width: 50px;
+                padding: 4px;
+                margin: 2px;
+            }
+            input.ratio-setter {
+                margin: 4px;
+            }
+            input#calculate {
+                padding: 5px;
+                margin: 5px;
+                font-size: 20px;
+            }
+            div.daybox {
+                background-color: #FFFFFF;
+            }
+            div.weekend {
+                background-color: #FFCCCC;
+            }
+            div.daybox {
+                padding: 2;
+                margin: 0;
+                float: left;
+                border: 1px solid lightgray;
+            }
+            div.timecontainer {
+                float: left;
+            }
+            div#calculations {
+                display: inline-block;
+                border: 1px solid gray;
+                border-radius: 5px;
+                background-color: #fdfade;
+                padding: 10px;
+                margin: 20px;
+            }
+            div.rota-box {
+                display: inline-block;
+                border: 1px solid gray;
+                border-radius: 5px;
+                background-color: #f4f9f9;
+                padding: 5px;
+            }
+            div.result-box {
+                border: 1px solid gray;
+                position: relative;
+                border-radius: 5px;
+                background-color: #f5f0d0;
+                float: left;
+                padding: 5px;
+            }
+            div.separator {
+                float: left;
+                width: 1px;
+                margin: 5px;
+            }
+            div.calc-container {
+                float: left;
+            }
+            span.result-label {
+                position: absolute;
+                top: -6px;
+                left: 20px;
+                background-color: #faf5d0;
+                text-align: center;
+                font-size: 10px;
+            }
+            hr {
+                border: 0;
+                border-top: 1px dotted gray;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Efling : Kalkulator pracy zmianowej - Miasto Reykjavik</h1>
+        <large><em>Porównanie grafiku zmian przed i po skróceniu tygodnia pracy</em></large>
+        <p>
+            <strong style="color: #9D233B;">
+                Sprostowanie: święta, urlop, dodatek grudniowy i nadgodziny nie są wliczone.
+                <br>
+                Kalkulator ma na celu oszacowanie zmian płac w nowym grafiku zmianowym.
+            </strong>
+        </p>
+        <div id="calculator">
+            <h2 style="color: #CC5015;">Nowy grafik pracy zmianowej</h2>
+            <div id="settings">
+                <table>
+                    <tr class="tohide">
+                        <td><label for="weeks">Liczba tygodni w nowym grafiku pracy zmianowej:</label></td>
+                        <td>
+                            <select id="weeks" name="weeks">
+                                <option value="1">jeden tydzień</option>
+                                <option value="2">dwa tygodnie</option>
+                                <option value="3">trzy tygodnie</option>
+                                <option value="4" selected>cztery tygodnie</option>
+                                <option value="5">pięć tygodni</option>
+                                <option value="6">sześć tygodni</option>
+                                <option value="7">siedem tygodni</option>
+                                <option value="8">osiem tygodni</option>
+                                <option value="9">dziewięć tygodni</option>
+                                <option value="10">dziesięć tygodni</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="tohide">
+                        <td><label for="start">Pierwsza data grafiku pracy zmianowej:</label></td>
+                        <td>
+                            <input type="date" id="start" name="start" value="2021-05-01">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="lfl">Kategoria wynagrodzenia:</label></td>
+                        <td>
+                            <select id="lfl" name="lfl" onchange="refresh()">
+                                <option value="219">219</option>
+                                <option value="220">220</option>
+                                <option value="221">221</option>
+                                <option value="222">222</option>
+                                <option value="223">223</option>
+                                <option value="224">224</option>
+                                <option value="225">225</option>
+                                <option value="226">226</option>
+                                <option value="227">227</option>
+                                <option value="228">228</option>
+                                <option value="229">229</option>
+                                <option value="230">230</option>
+                                <option value="231">231</option>
+                                <option value="232">232</option>
+                                <option value="233">233</option>
+                                <option value="234">234</option>
+                                <option value="235">235</option>
+                                <option value="236">236</option>
+                                <option value="237">237</option>
+                                <option value="238">238</option>
+                                <option value="239">239</option>
+                                <option value="240">240</option>
+                                <option value="241">241</option>
+                                <option value="242">242</option>
+                                <option value="243">243</option>
+                                <option value="244">244</option>
+                                <option value="245">245</option>
+                                <option value="246">246</option>
+                                <option value="247">247</option>
+                                <option value="248">248</option>
+                                <option value="249">249</option>
+                                <option value="250">250</option>
+                                <option value="251">251</option>
+                                <option value="252">252</option>
+                                <option value="253">253</option>
+                                <option value="254">254</option>
+                                <option value="255">255</option>
+                                <option value="256">256</option>
+                                <option value="257">257</option>
+                                <option value="258">258</option>
+                                <option value="259">259</option>
+                                <option value="260">260</option>
+                                <option value="261">261</option>
+                                <option value="262">262</option>
+                                <option value="263">263</option>
+                                <option value="264">264</option>
+                                <option value="265">265</option>
+                                <option value="266">266</option>
+                                <option value="267">267</option>
+                                <option value="268">268</option>
+                                <option value="269">269</option>
+                                <option value="270">270</option>
+                                <option value="271">271</option>
+                                <option value="272">272</option>
+                                <option value="273">273</option>
+                                <option value="274">274</option>
+                                <option value="275">275</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="step">Poziom wynagrodzenia:</label></td>
+                        <td>
+                            <select id="step" name="step" onchange="refresh()">
+                                <option value="0">Poziom podstawowy</option>
+                                <option value="1">Poziom 1</option>
+                                <option value="2">Poziom 2</option>
+                                <option value="3">Poziom 3</option>
+                                <option value="4">Poziom 4</option>
+                                <option value="5">Poziom 5</option>
+                                <option value="6">Poziom 6</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="start-date">Okres rozliczeniowy:</label></td>
+                        <td>
+                            <select id="start-date" name="start-date" onchange="refresh()">
+                                <option value="01">1. - 31.</option>
+                                <option value="11">11. - 10.</option>
+                                <option value="15">15. - 14.</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Etat pracy:</td>
+                        <td>
+                            <input type="radio" name="ratio-setter" id="free-ratio" onchange="refreshRatioDisplay()" checked> <label for="free-ratio">Automatyczne obliczanie</label>
+                            <input type="radio" name="ratio-setter" id="set-ratio" onchange="refreshRatioDisplay()"> <label for="set-ratio">Wpisz swój etat pracy</label>
+                            <br>
+                            <div id="ratio-setter-container" style="display: none;">
+                                <input type="number" name="ratio-value" id="ratio-value" class="ratio-setter" value="100" onchange="refreshRatio();">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="tohide">
+                        <td><input type="button" id="populator" onclick="populateNewWeeks()" value="Wpisz swoje zmiany"></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="result-container" style="display: none;">
+                <p>Wpisz rozpoczęcie i zakończenie swojej zmiany w dni, w których pracujesz. Użyj 13 dla  godz.13:00, 14 dla godz.14:00 itd.</p>
+                <div id="week-list" class="rota-box"></div>
+                <br><br>
+                <h2 style="cursor: pointer; color: #CC5015;" id="old-caption" onclick="displayOld()">Kliknij tutaj, aby wprowadzić swój poprzedni grafik pracy zmianowej w celu porównania</h2>
+                <div id="old" style="display: none;">
+                    <div id="settings-old">
+                        <h2 style="color: #CC5015;">Poprzedni grafik pracy zmianowej</h2>
+                        <table>
+                            <tr class="tohide-old">
+                                <td><label for="weeks-old">Liczba tygodni w poprzednim grafiku zmianowym:</label></td>
+                                <td>
+                                    <select id="weeks-old" name="weeks-old">
+                                        <option value="1">jeden tydzień</option>
+                                        <option value="2">dwa tygodnie</option>
+                                        <option value="3">trzy tygodnie</option>
+                                        <option value="4" selected>cztery tygodnie</option>
+                                        <option value="5">pięć tygodni</option>
+                                        <option value="6">sześć tygodni</option>
+                                        <option value="7">siedem tygodni</option>
+                                        <option value="8">osiem tygodni</option>
+                                        <option value="9">dziewięć tygodni</option>
+                                        <option value="10">dziesięć tygodni</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="tohide-old">
+                                <td><label for="start-old">Pierwsza data grafiku pracy zmianowej:</label></td>
+                                <td>
+                                    <input type="date" id="start-old" name="start-old" value="2021-01-01">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Etat pracy:</td>
+                                <td>
+                                    <input type="radio" name="ratio-setter-old" id="free-ratio-old" onchange="refreshRatioDisplay()" checked> <label for="free-ratio-old">Automatyczne obliczanie</label>
+                                    <input type="radio" name="ratio-setter-old" id="set-ratio-old" onchange="refreshRatioDisplay()"> <label for="set-ratio-old">Wpisz swój etat pracy</label>
+                                    <br>
+                                    <div id="ratio-setter-container-old" style="display: none;">
+                                        <input type="number" name="ratio-value-old" id="ratio-value-old" class="ratio-setter" value="80" onchange="refreshRatio();">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="tohide-old">
+                                <td><input type="button" id="populator-old" onclick="populateOldWeeks()" value="Wpisz swoje zmiany"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="week-list-old" class="rota-box"></div>
+                </div>
+                <br><br>
+                <div id="calculations">
+                    <h3>Porównanie</h3>
+                    <p>Kategoria wynagrodzenia <span id="lfl-print"></span>, <span id="step-print"></span>.</p>
+                    <p>
+                        <select id="view" name="view" onchange="refresh()">
+                            <option value="average">Przeciętny miesiąc bez świąt</option>
+                            <option value="2021-05">Maj 2021</option>
+                            <option value="2021-06">Czerwiec 2021</option>
+                            <option value="2021-07">Lipiec 2021</option>
+                            <option value="2021-08">Sierpień 2021</option>
+                            <option value="2021-09">Wrzesień 2021</option>
+                            <option value="2021-10">Październik 2021</option>
+                            <option value="2021-11">Listopad 2021</option>
+                            <option value="2021-12">Grudzień 2021</option>
+                            <option value="2022-01">Styczeń 2022</option>
+                            <option value="2022-02">Luty 2022</option>
+                            <option value="2022-03">Marzec 2022</option>
+                            <option value="2022-04">Kwiecień 2022</option>
+                        </select>
+                    </p>
+                    <p><strong style="color: #9D233B;">Wszystkie obliczenia podane są przed opodatkowaniem (brutto).</strong></p>
+                    <div id="calc-old" class="calc-container" style="display: none;">
+                        <h4>Poprzedni grafik pracy zmianowej</h4>
+                        <p>Etat pracy: <span id="ratio-print-old"></span></p>
+                        <div class="result-box">
+                            <!--<span class="result-label">Meðalmánuður án hátíðadaga</span>-->
+                            <table class="result-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Ilość godzin</th>
+                                        <th>Stawki</th>
+                                        <th>Kwota</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>Specjalne płatności:</td>
+                                    <td class="time-result" id="pct-special-old">-</td>
+                                    <td class="time-result" id="rate-special-old">-</td>
+                                    <td class="time-result money" id="kr-special-old">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Wynagrodzenie:</td>
+                                    <td class="time-result" id="hrs-daytime-old">-</td>
+                                    <td class="time-result" id="rate-daytime-old">-</td>
+                                    <td class="time-result money" id="kr-daytime-old">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Przerwy kawowe:</td>
+                                    <td class="time-result" id="hrs-coffee-old">-</td>
+                                    <td class="time-result" id="rate-coffee-old">-</td>
+                                    <td class="time-result money" id="kr-coffee-old">-</td>
+                                </tr>
+                                <tr>
+                                    <td>33%:</td>
+                                    <td class="time-result" id="hrs-33-old">-</td>
+                                    <td class="time-result" id="rate-33-old">-</td>
+                                    <td class="time-result money" id="kr-33-old">-</td>
+                                </tr>
+                                <tr>
+                                    <td>55%:</td>
+                                    <td class="time-result" id="hrs-55-old">-</td>
+                                    <td class="time-result" id="rate-55-old">-</td>
+                                    <td class="time-result money" id="kr-55-old">-</td>
+                                </tr>
+                                <tr>
+                                    <td>90%:</td>
+                                    <td class="time-result" id="hrs-90-old">-</td>
+                                    <td class="time-result" id="rate-90-old">-</td>
+                                    <td class="time-result money" id="kr-90-old">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Suma:</td>
+                                    <td class="time-result" id="hrs-all-old"></td>
+                                    <td></td>
+                                    <td class="time-result money" id="kr-all-old">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div class="separator"></div>
+                    <div id="calc-new" class="calc-container">
+                        <h4>Nowy grafik pracy zmianowej</h4>
+                        <p>Etat pracy: <span id="ratio-print"></span></p>
+                        <div class="result-box">
+                            <!--<span class="result-label">Meðalmánuður án hátíðadaga</span>-->
+                            <table class="result-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Ilość godzin</th>
+                                        <th>Stawki</th>
+                                        <th>Kwota</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>Specjalne płatności:</td>
+                                    <td class="time-result" id="pct-special">-</td>
+                                    <td class="time-result" id="rate-special">-</td>
+                                    <td class="time-result money" id="kr-special">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Wynagrodzenie:</td>
+                                    <td class="time-result" id="hrs-daytime">-</td>
+                                    <td class="time-result" id="rate-daytime">-</td>
+                                    <td class="time-result money" id="kr-daytime">-</td>
+                                </tr>
+                                <tr>
+                                    <td>33%:</td>
+                                    <td class="time-result" id="hrs-33">-</td>
+                                    <td class="time-result" id="rate-33">-</td>
+                                    <td class="time-result money" id="kr-33">-</td>
+                                </tr>
+                                <tr>
+                                    <td>55%:</td>
+                                    <td class="time-result" id="hrs-55">-</td>
+                                    <td class="time-result" id="rate-55">-</td>
+                                    <td class="time-result money" id="kr-55">-</td>
+                                </tr>
+                                <tr>
+                                    <td>65%:</td>
+                                    <td class="time-result" id="hrs-65">-</td>
+                                    <td class="time-result" id="rate-65">-</td>
+                                    <td class="time-result money" id="kr-65">-</td>
+                                </tr>
+                                <tr>
+                                    <td>75%:</td>
+                                    <td class="time-result" id="hrs-75">-</td>
+                                    <td class="time-result" id="rate-75">-</td>
+                                    <td class="time-result money" id="kr-75">-</td>
+                                </tr>
+                                <tr>
+                                    <td>90%:</td>
+                                    <td class="time-result" id="hrs-90">-</td>
+                                    <td class="time-result" id="rate-90">-</td>
+                                    <td class="time-result money" id="kr-90">-</td>
+                                </tr>
+                                <tr>
+                                    <td>120%:</td>
+                                    <td class="time-result" id="hrs-120">-</td>
+                                    <td class="time-result" id="rate-120">-</td>
+                                    <td class="time-result money" id="kr-120">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Dodatek za różnorodność zmian:</td>
+                                    <td class="time-result" id="pct-bonus">-</td>
+                                    <td class="time-result" id="rate-bonus">-</td>
+                                    <td class="time-result money" id="kr-bonus">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Suma:</td>
+                                    <td class="time-result" id="hrs-all"></td>
+                                    <td></td>
+                                    <td class="time-result money" id="kr-all">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div class="calc-container" id="comparison-container" style="display: none;">
+                            <h4>Różnica</h4>
+                            <p id="monthly-comparison"><span id="diff-month-label">Na miesiąc</span>: <span id="diff-month">0</span>kr</p>
+                            <p id="annual-comparison">Na rok: <span id="diff-year">0</span>kr</p>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div style="float: left; margin-top: 15px;">
+                        <strong style="color: #9D233B;">
+                            Sprostowanie: święta, urlop, dodatek grudniowy i nadgodziny nie są wliczone.
+                            <br>
+                            Kalkulator ma na celu oszacowanie zmian płac w nowym grafiku zmianowym.
+                            <br>
+                            Pamiętaj, że Twój okres rozliczeniowy może różnić się od podanego.
+                        </strong>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <em>Pytania i komentarze prosimy przesyłać na adres <a href="mailto:benjamin@efling.is">benjamin@efling.is.</a></em>
+        <script src="../wages.js"></script>
+        <script src="../functions.js"></script>
+        <script src="../../common.js"></script>
+    </body>
+</html>
